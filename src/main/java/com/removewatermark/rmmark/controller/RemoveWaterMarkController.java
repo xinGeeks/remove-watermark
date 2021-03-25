@@ -5,10 +5,7 @@ package com.removewatermark.rmmark.controller;
 import com.removewatermark.rmmark.bean.RmMarkResponse;
 import com.removewatermark.rmmark.common.ParseCommonUtil;
 import com.removewatermark.rmmark.service.VideoParseUrlService;
-import com.removewatermark.rmmark.service.impl.DouYinParseUrlServiceImpl;
-import com.removewatermark.rmmark.service.impl.HuoShanParseUrlServiceImpl;
-import com.removewatermark.rmmark.service.impl.KuaiShouParseUrlServiceImpl;
-import com.removewatermark.rmmark.service.impl.PipixiaParseUrlServiceImpl;
+import com.removewatermark.rmmark.service.impl.*;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +43,9 @@ public class RemoveWaterMarkController {
     @Autowired
     private KuaiShouParseUrlServiceImpl kuaiShouParseUrlService;
 
+    @Autowired
+    private WeiShiParseUrlServiceImpl weiShiParseUrlService;
+
     @RequestMapping("/index")
     public String index() {
         return "index";
@@ -79,6 +79,10 @@ public class RemoveWaterMarkController {
             } else if (url.contains(ParseCommonUtil.KUAI_SHOU)) {
                 logger.debug("解析快手");
                 response = kuaiShouParseUrlService.parseUrl(url);
+            } else if (url.contains(ParseCommonUtil.WEI_SHI)) {
+                response = weiShiParseUrlService.parseUrl(url);
+            } else if (url.contains(ParseCommonUtil.ZUI_YOU)) {
+                
             }
         } catch (Exception e) {
             e.printStackTrace();

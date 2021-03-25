@@ -10,7 +10,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +33,11 @@ public class ParseCommonUtil {
 
     public final static String PIPIXIA_DOMAIN = "pipix";
 
-    public final static String KUAI_SHOU="kuaishou";
+    public final static String KUAI_SHOU = "kuaishou";
+
+    public final static String WEI_SHI = "weishi";
+
+    public final static String ZUI_YOU= "izuiyou";
 
     public static String DOU_YIN_BASE_URL = "https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=";
 
@@ -75,8 +81,28 @@ public class ParseCommonUtil {
         return buf.toString();
     }
 
+    public static String okHttpGet(String url) {
+        return okHttpGet(url, new HashMap<>());
+    }
+
+    public static String okHttpGet(String url, Map<String, String> headers) {
+        OkHttpClient client = new OkHttpClient();
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            requestBuilder.addHeader(entry.getKey(),entry.getValue());
+        }
+        Request request = requestBuilder.build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     /**
      * 获取快手视频唯一标识
+     *
      * @param redirectUrl
      * @return
      */
@@ -92,6 +118,7 @@ public class ParseCommonUtil {
 
     /**
      * 获取火山视频唯一标识
+     *
      * @param redirectUrl
      * @return
      */
@@ -107,6 +134,7 @@ public class ParseCommonUtil {
 
     /**
      * 获取快手 视频唯一标识
+     *
      * @param url
      * @return
      */
@@ -116,6 +144,7 @@ public class ParseCommonUtil {
 
     /**
      * 获取皮皮虾 视频唯一标识
+     *
      * @param url
      * @return
      */
